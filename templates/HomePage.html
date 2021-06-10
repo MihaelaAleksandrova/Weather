@@ -1,1 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
 
+  <script src="https://kit.fontawesome.com/4217479914.js" crossorigin="anonymous"></script>
+  <!-- tell Microsoft Internet Explorer to use the latest rendering engine (edge) -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <!--  The charset attribute specifies the character encoding for the HTML document.-->
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Weather Updates</title>
+  <link rel="stylesheet" href="../static/css/home.css">
+  <link rel="icon" href="../static/images/icon.png"
+
+</head>
+
+<body>
+</div>
+<div class="header">
+  <h1>Weather Updates</h1>
+
+    <nav class="topnav">
+      <ul class="nav">
+        <li><a href="HomePage.html">Начало</a></li>
+        <li><a href="https://www.sinoptik.bg/locations/europe/bulgaria">България</a></li>
+        <li><a href="">Фаза на луната</a></li>
+
+      </ul>
+    </nav>
+    <p> </p>
+    <nav class="nav-day">
+      <ul class="nav">
+        <li><a href="HomePage.html">В момента</a></li>
+        <li><a href="https://www.sinoptik.bg/locations/europe/bulgaria">3-дневна</a></li>
+        <li><a href="">7-дневна</a></li>
+
+      </ul>
+    </nav>
+</div>
+
+<div class="container">
+  <div class="app-title">
+    <p>Current Weather</p>
+  </div>
+  <div class="notification"></div>
+  <div class="weather-container">
+    <div class="weather-icon">
+      <img src="icons/unknown.png" alt="">
+    </div>
+    <div class="temperature-value">
+      <p>- °<span>C</span></p>
+    </div>
+    <div class="temperature-description">
+      <p>-</p>
+    </div>
+    <div class="location">
+      <p>-</p>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="flex-container">
+  <div class="title">
+    <p>DETAILS</p>
+  </div>
+  <div class="feels-like">
+    <p>Feels like<span>- °</span><span>C</span></p>
+  </div>
+  <div class="max temperature">
+    <p>maxTemp °<span>C</span></p>
+  </div>
+  <div class="min temperature">
+    <p>minTemp °<span>C</span></p>
+  </div>
+  <div class="wind">
+    <p>-</p>
+  </div>
+  <div class="humidity">
+    <p>humidity %</p>
+  </div>
+    
+  
+
+
+
+<script>
+  const iconElement = document.querySelector(".weather-icon");
+  const tempElement = document.querySelector(".temperature-value p");
+  const descElement = document.querySelector(".temperature-description p");
+  const locationElement = document.querySelector(".location p");
+  const notificationElement = document.querySelector(".notification");
+
+  const weather = {}
+    weather.temperature = {
+      unit : "celsius"
+    }
+    weather.tempMAX = {
+      unit: "celsius"
+    }
+    weather.tempMIN = {
+      unit: "celsius"
+    }
+    weather.tempfeel = {
+      unit: "celsius"
+    }
+
+
+    const KELVIN = 273;
+    //API KEY
+    const key = "b1a41924de447699dd4f762e454ba912"
+    // check if browser suppports geolocation
+    if('geolocation' in navigator){
+      navigator.geolocation.getCurrentPosition(setPosition, showError);
+    }else{
+      notificationElement.style.display = "block";
+      notificationElement.innerHTML = "<p>Browser doesn't support Geolocation</p>";
+    }
+    //set user's position
+    function setPosition(position){
+      let latitude = position.coords.latitude;
+      let longitude = position.coords.longitude;
+
+      getWeather(latitude, longitude);
+      getDetails(latitude,longitude);
+    }
+    //show error when there is an issue with geolocation service
+    function showError(error){
+      notificationElement.style.display = "block";
+      notificationElement.innerHTML = `<p> ${error.message} </p>`;
+    }  
+    // get weather from api
+    function getWeather(latitude, longitude){
+      let api = `http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${key}` ;
+      
+      fetch(api)
+         .then(function(response){
+           let data = response.json();
+           return data;
+         })
+         .then(function(data){
+           weather.temperature.value = Math.floor(data.main.temp - KELVIN);
+           weather.description = data.weather[0].description;
+           weather.iconId = data.weather[0].icon
+           weather.city = data.name;
+           weather.country = data.sys.country;
+         })
+         .then(function(){
+           displayWeather();
+         })
+    }
+    //display weather to ui
+    function displayWeather(){
+      iconElement.innerHTML = `<img src = "icons/${weather.iconId}.png"/>`;
+      tempElement.innerHTML = `${weather.temperature.value}°<span>C</span>`;
+      descElement.innerHTML = weather.description;
+      locationElement.innerHTML = `${weather.city}, ${weather.country}`;
+    }
+
+  const feelslikeElement = document.querySelector(".feels-like p");
+  const maxtempElement = document.querySelector(".max temperature p");
+  const mintempElement = document.querySelector(".min temperature p");
+  const windElement = document.querySelector(".wind p");
+  const humidityElement = document.querySelector(".humidity p");
+  
+    // get details
+    function getDetails(latitude, longitude){
+      let api = `http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${key}` ;
+      fetch(api)
+         .then(function(response){
+           let data = response.json();
+           return data;
+         })
+         .then(function(data){
+           weather.tempfeel.value = Math.floor(data.main.feels_like - KELVIN);
+           weather.tempMAX.value = Math.floor(data.main.temp_max - KELVIN);
+           weather.tempMIN.value = Math.floor(data.main.temp_min - KELVIN);
+           weather.wind = data.wind.speed
+           weather.humidity = data.main.humidity;
+           
+         })
+         .then(function(){
+           displayDetails();
+         })
+    }
+    function displayDetails(){
+
+      feelslikeElement.innerHTML = `${weather.tempfeel.value}°<span>C</span>`;
+      maxtempElement.innerHTML = `${weather.tempMAX.value}°<span>C</span>`;
+      mintempElement.innerHTML = `${weather.tempMIN.value}°<span>C</span>`;
+      windElement.innerHTML = weather.wind;
+      humidityElement.innerHTML = weather.humidity;
+      
+    }
+
+
+  </script>
+
+    
+  
+</body>
+</html>
