@@ -18,20 +18,16 @@
 <div class="header">
   <h1>Weather Updates</h1>
 
-    <nav class="topnav">
-      <ul class="nav">
-        <li><a href="HomePage.html">Начало</a></li>
-        <li><a href="https://www.sinoptik.bg/locations/europe/bulgaria">България</a></li>
-        <li><a href="">Фаза на луната</a></li>
-
-      </ul>
+    
     </nav>
     <p> </p>
     <nav class="nav-day">
       <ul class="nav">
-        <li><a href="HomePage.html">В момента</a></li>
-        <li><a href="https://www.sinoptik.bg/locations/europe/bulgaria">3-дневна</a></li>
-        <li><a href="">7-дневна</a></li>
+        <li><a href="HomePage.html">Current Weather</a></li>
+        <li><a href="3days.html">3 Day</a></li>
+        <li><a href="7days.html">7 Day</a></li>
+        <li><a href="SearchWeather.html">Search Weather</a></li>
+
 
       </ul>
     </nav>
@@ -44,7 +40,7 @@
   <div class="notification"></div>
   <div class="weather-container">
     <div class="weather-icon">
-      <img src="icons/unknown.png" alt="">
+      <img src="http://api.openweathermap.org/img/wn/${weather[0].icon}=${key}" alt="">
     </div>
     <div class="temperature-value">
       <p>- °<span>C</span></p>
@@ -62,16 +58,16 @@
 
 <div class="flex-container">
   <div class="title">
-    <p>DETAILS</p>
+  <h1>DETAILS</h1>
   </div>
   <div class="feels-like">
     <p>Feels like<span>- °</span><span>C</span></p>
   </div>
   <div class="max temperature">
-    <p>maxTemp °<span>C</span></p>
+    <p>maxTemp<span>- °C</span></p>
   </div>
   <div class="min temperature">
-    <p>minTemp °<span>C</span></p>
+    <p>minTemp<span>- °C</span></p>
   </div>
   <div class="wind">
     <p>-</p>
@@ -193,6 +189,7 @@
       
     }
 
+    
 
   </script>
 
