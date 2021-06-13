@@ -61,19 +61,24 @@
   <h1>DETAILS</h1>
   </div>
   <div class="feels-like">
+    <h1>Feels like</h1>
     <p>Feels like<span>- °</span><span>C</span></p>
   </div>
   <div class="max temperature">
-    <p>maxTemp<span>- °C</span></p>
+    <h1>Max Temp</h1>
+    <p>- °C</p>
   </div>
   <div class="min temperature">
-    <p>minTemp<span>- °C</span></p>
+    <h1>Min Temp</h1>
+    <p>- °C</p>
   </div>
   <div class="wind">
+    <h1>Wind</h1>
     <p>-</p>
   </div>
   <div class="humidity">
-    <p>humidity %</p>
+    <h1>Humidity</h1>
+    <p>- %</p>
   </div>
     
   
@@ -147,7 +152,7 @@
     }
     //display weather to ui
     function displayWeather(){
-      iconElement.innerHTML = `<img src = "icons/${weather.iconId}.png"/>`;
+      iconElement.innerHTML = `<img src = "../static/images/icons/${weather.iconId}@2x.png"/>`;
       tempElement.innerHTML = `${weather.temperature.value}°<span>C</span>`;
       descElement.innerHTML = weather.description;
       locationElement.innerHTML = `${weather.city}, ${weather.country}`;
